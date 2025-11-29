@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, -20px); }
+        }
+
+        .shop-title {
+            font-size: 56px;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .shop-title::before {
+            content: '✨';
+            margin-right: 15px;
+        }
+
+        .shop-title::after {
+            content: '✨';
+            margin-left: 15px;
+        }
+
+        .shop-subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 20px;
+            margin-top: 10px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #667eea;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #5568d3;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-telegram {
+            background: #0088cc;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .btn-telegram:hover {
+            background: #006699;
+        }
+
+        .admin-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9ff;
+        }
+
+        .file-upload-area:hover {
+            background: #e8eaff;
+            border-color: #5568d3;
+        }
+
+        .file-upload-area.dragover {
+            background: #d8daff;
+            border-color: #5568d3;
+        }
+
+        .category-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .category-section:hover {
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .category-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .category-header:hover::before {
+            opacity: 1;
+        }
+
+        .category-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+            padding-left: 35px;
+        }
+
+        .category-toggle {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .category-toggle.expanded {
+            transform: rotate(180deg);
+        }
+
+        .category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .category-content.expanded {
+            max-height: 5000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+        .product-images-container {
+            position: relative;
+        }
+
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .image-nav:hover {
+            background: white;
+        }
+
+        .image-nav.prev {
+            left: 10px;
+        }
+
+        .image-nav.next {
+            right: 10px;
+        }
+
+        .image-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .image-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .image-dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .image-zoom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-zoom-modal.active {
+            display: flex;
+        }
+
+        .zoom-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .zoom-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .zoom-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-nav:hover {
+            background: white;
+        }
+
+        .zoom-nav.prev {
+            left: -70px;
+        }
+
+        .zoom-nav.next {
+            right: -70px;
+        }
+
+        .upload-images-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .uploaded-image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .uploaded-image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid #667eea;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 20px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #667eea;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        .github-setup {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="shop-title">Titi's Collection</h1>
+            <p class="shop-subtitle">Where Style Meets Elegance 💎</p>
+            <div class="admin-button-container">
+                <button class="btn" id="adminBtn">Admin Panel</button>
+            </div>
+        </div>
+
+        <div class="admin-panel" id="adminPanel">
+            <h2>Admin Panel</h2>
+            
+            <h3>Add New Product</h3>
+            
+            <form id="productForm">
+                <div class="form-group">
+                    <label>Category:</label>
+                    <select id="productCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Shoes">👟 Shoes</option>
+                        <option value="Clothes">👕 Clothes</option>
+                        <option value="Kids Clothes">👶 Kids Clothes</option>
+                        <option value="Jewelry">💍 Jewelry</option>
+                        <option value="Accessories">👜 Accessories</option>
+                        <option value="Electronics">📱 Electronics</option>
+                        <option value="Other">📦 Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Product Name:</label>
+                    <input type="text" id="productName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea id="productDesc" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Price:</label>
+                    <input type="text" id="productPrice" placeholder="e.g., $99.99" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Upload Product Images (Up to 5 images):</label>
+                    <div class="file-upload-area" id="uploadArea">
+                        <p>📸 Click or drag images here</p>
+                        <p style="font-size: 14px; color: #666; margin-top: 10px;">Max 1MB per image - JPG, PNG, GIF</p>
+                    </div>
+                    <input type="file" id="productImage" accept="image/*" multiple style="display:none;">
+                    <div class="upload-images-list" id="uploadImagesList"></div>
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">Add Product</button>
+                <button type="button" class="btn btn-danger" id="closeAdmin">Close Panel</button>
+            </form>
+        </div>
+
+        <div id="categoriesContainer"></div>
+        
+        <div class="image-zoom-modal" id="imageZoomModal">
+            <div class="zoom-content">
+                <button class="zoom-close" onclick="closeImageZoom()">×</button>
+                <button class="zoom-nav prev" onclick="zoomPrevImage()" id="zoomPrevBtn">‹</button>
+                <img class="zoom-image" id="zoomImage" src="">
+                <button class="zoom-nav next" onclick="zoomNextImage()" id="zoomNextBtn">›</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <h2>Admin Access</h2>
+            <div class="form-group">
+                <label>Enter Password:</label>
+                <input type="password" id="adminPassword">
+            </div>
+            <button class="btn" id="loginBtn">Login</button>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = 'admin123';
+        const TELEGRAM_LINK = 'https://t.me/ET211212';
+        const DATA_FILE = 'products.json';
+        
+        // GitHub Configuration - Hardcoded
+        const GITHUB_USERNAME = 'eyob12';
+        const GITHUB_REPO = 'product-images';
+        const GITHUB_TOKEN = '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';
+        
+        let products = [];
+        let isAdmin = false;
+        let currentImageFiles = [];
+        let currentZoomProduct = null;
+        let currentZoomIndex = 0;
+
+        // Load products from GitHub
+        async function loadProducts() {
+            try {
+                const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${DATA_FILE}`;
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const content = atob(data.content);
+                    products = JSON.parse(content);
+                } else if (response.status === 404) {
+                    products = [];
+                    await saveProducts();
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                products = [];
+            }
+            
+            renderCategories();
+        }
+
+        // Save products to GitHub
+        async function saveProducts() {
+            try {
+                const content = btoa(JSON.stringify(products, null, 2));
+                const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${DATA_FILE}`;
+                
+                let sha = null;
+                const getResponse = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (getResponse.ok) {
+                    const data = await getResponse.json();
+                    sha = data.sha;
+                }
+                
+                const body = {
+                    message: 'Update products',
+                    content: content,
+                    ...(sha && { sha })
+                };
+                
+                await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+            } catch (error) {
+                console.error('Error saving products:', error);
+                alert('Error saving to GitHub. Please check your connection.');
+            }
+        }
+
+        // Upload image to GitHub
+        async function uploadImageToGithub(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    try {
+                        const content = e.target.result.split(',')[1];
+                        const filename = `images/${Date.now()}_${file.name}`;
+                        const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${filename}`;
+                        
+                        const response = await fetch(url, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `token ${GITHUB_TOKEN}`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: 'Upload product image',
+                                content: content
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            resolve(data.content.download_url);
+                        } else {
+                            reject('Upload failed');
+                        }
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Render categories
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            const categories = {};
+            
+            products.forEach(product => {
+                if (!categories[product.category]) {
+                    categories[product.category] = [];
+                }
+                categories[product.category].push(product);
+            });
+            
+            if (Object.keys(categories).length === 0) {
+                container.innerHTML = '<div class="category-section"><div class="no-products"><h2>No products available yet</h2><p>Check back soon!</p></div></div>';
+                return;
+            }
+            
+            grid.innerHTML = Object.keys(categories).map(category => `
+                <div class="category-section">
+                    <div class="category-header" onclick="toggleCategory('${category}')">
+                        <span>${getCategoryIcon(category)} ${category}</span>
+                        <span class="category-toggle" id="toggle-${category}">▼</span>
+                    </div>
+                    <div class="category-content" id="content-${category}">
+                        <div class="products-grid">
+                            ${categories[category].map((product, idx) => {
+                                const images = Array.isArray(product.images) ? product.images : [product.image];
+                                return `
+                                <div class="product-card">
+                                    <div class="product-images-container">
+                                        <img src="${images[0]}" alt="${product.name}" class="product-image" onclick="openImageZoom('${category}', ${idx}, 0)" onerror="this.src='https://via.placeholder.com/300x250?text=Image+Not+Found'">
+                                        ${images.length > 1 ? `
+                                            <button class="image-nav prev" onclick="event.stopPropagation(); changeProductImage('${category}', ${idx}, -1)">‹</button>
+                                            <button class="image-nav next" onclick="event.stopPropagation(); changeProductImage('${category}', ${idx}, 1)">›</button>
+                                            <div class="image-dots" id="dots-${category}-${idx}">
+                                                ${images.map((_, i) => `<span class="image-dot ${i === 0 ? 'active' : ''}" onclick="event.stopPropagation(); setProductImage('${category}', ${idx}, ${i})"></span>`).join('')}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="product-name">${product.name}</div>
+                                        <div class="product-description">${product.description}</div>
+                                        <div class="product-price">${product.price}</div>
+                                        <a href="${TELEGRAM_LINK}?text=${encodeURIComponent('I want to order: ' + product.name + ' - ' + product.price)}" 
+                                           target="_blank" 
+                                           class="btn btn-telegram">
+                                            📱 Order via Telegram
+                                        </a>
+                                        ${isAdmin ? `
+                                            <div class="product-actions">
+                                                <button class="btn btn-danger" onclick="deleteProduct('${category}', ${idx})">Delete</button>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `}).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                'Shoes': '👟',
+                'Clothes': '👕',
+                'Kids Clothes': '👶',
+                'Jewelry': '💍',
+                'Accessories': '👜',
+                'Electronics': '📱',
+                'Other': '📦'
+            };
+            return icons[category] || '📦';
+        }
+
+        function toggleCategory(category) {
+            const content = document.getElementById(`content-${category}`);
+            const toggle = document.getElementById(`toggle-${category}`);
+            
+            content.classList.toggle('expanded');
+            toggle.classList.toggle('expanded');
+        }
+
+        // File upload handlers
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('productImage');
+        const uploadImagesList = document.getElementById('uploadImagesList');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+            handleImageFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleImageFiles(files);
+        });
+
+        function handleImageFiles(files) {
+            if (currentImageFiles.length + files.length > 5) {
+                alert('Maximum 5 images allowed!');
+                return;
+            }
+            
+            files.forEach(file => {
+                if (file.size > 1024 * 1024) {
+                    alert(`${file.name} is too large! Max 1MB per image.`);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentImageFiles.push(e.target.result);
+                    updateImagesList();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function updateImagesList() {
+            uploadImagesList.innerHTML = currentImageFiles.map((img, idx) => `
+                <div class="uploaded-image-preview">
+                    <img src="${img}">
+                    <button class="remove-image-btn" onclick="removeImage(${idx})">×</button>
+                </div>
+            `).join('');
+            
+            uploadArea.innerHTML = currentImageFiles.length > 0 
+                ? `<p>✅ ${currentImageFiles.length} image(s) uploaded!</p><p style="font-size: 14px; color: #666; margin-top: 10px;">Click to add more (max 5)</p>`
+                : '<p>📸 Click or drag images here</p><p style="font-size: 14px; color: #666; margin-top: 10px;">Max 1MB per image - JPG, PNG, GIF</p>';
+        }
+
+        function removeImage(index) {
+            currentImageFiles.splice(index, 1);
+            updateImagesList();
+        }
+
+        // Add product
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (currentImageFiles.length === 0) {
+                alert('Please upload at least one image!');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Uploading...';
+            
+            try {
+                const imageUrls = [];
+                for (let i = 0; i < currentImageFiles.length; i++) {
+                    submitBtn.textContent = `Uploading image ${i + 1}/${currentImageFiles.length}...`;
+                    const blob = await fetch(currentImageFiles[i]).then(r => r.blob());
+                    const file = new File([blob], `image_${i}.jpg`, { type: blob.type });
+                    const url = await uploadImageToGithub(file);
+                    imageUrls.push(url);
+                }
+                
+                const product = {
+                    category: document.getElementById('productCategory').value,
+                    name: document.getElementById('productName').value,
+                    description: document.getElementById('productDesc').value,
+                    price: document.getElementById('productPrice').value,
+                    images: imageUrls,
+                    image: imageUrls[0] // Keep for backward compatibility
+                };
+                
+                products.push(product);
+                await saveProducts();
+                await loadProducts();
+                
+                e.target.reset();
+                currentImageFiles = [];
+                updateImagesList();
+                
+                alert('Product added successfully!');
+            } catch (error) {
+                alert('Error adding product. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Product';
+            }
+        });
+
+        // Delete product
+        async function deleteProduct(category, index) {
+            if (!confirm('Delete this product?')) return;
+            
+            const categoryProducts = products.filter(p => p.category === category);
+            const productToDelete = categoryProducts[index];
+            const globalIndex = products.indexOf(productToDelete);
+            
+            products.splice(globalIndex, 1);
+            await saveProducts();
+            await loadProducts();
+        }
+
+        // Admin panel
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            if (isAdmin) {
+                document.getElementById('adminPanel').classList.add('active');
+            } else {
+                document.getElementById('passwordModal').classList.add('active');
+            }
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('passwordModal').classList.remove('active');
+                document.getElementById('adminPanel').classList.add('active');
+                document.getElementById('adminPassword').value = '';
+                renderCategories();
+            } else {
+                alert('Incorrect password!');
+            }
+        });
+
+        document.getElementById('closeAdmin').addEventListener('click', () => {
+            document.getElementById('adminPanel').classList.remove('active');
+        });
+
+        // Initialize
+        loadProducts();
+        
+        // Image navigation for product cards
+        function changeProductImage(category, productIdx, direction) {
+            const categoryProducts = products.filter(p => p.category === category);
+            const product = categoryProducts[productIdx];
+            const images = Array.isArray(product.images) ? product.images : [product.image];
+            
+            const cardId = `${category}-${productIdx}`;
+            const card = document.querySelector(`[data-card-id="${cardId}"]`);
+            let currentIdx = parseInt(card?.dataset.currentIdx || 0);
+            
+            currentIdx = (currentIdx + direction + images.length) % images.length;
+            
+            updateProductCardImage(category, productIdx, currentIdx);
+        }
+        
+        function setProductImage(category, productIdx, imgIdx) {
+            updateProductCardImage(category, productIdx, imgIdx);
+        }
+        
+        function updateProductCardImage(category, productIdx, imgIdx) {
+            const categoryProducts = products.filter(p => p.category === category);
+            const product = categoryProducts[productIdx];
+            const images = Array.isArray(product.images) ? product.images : [product.image];
+            
+            const container = document.querySelector(`#content-${category} .products-grid`).children[productIdx];
+            const img = container.querySelector('.product-image');
+            const dots = container.querySelectorAll('.image-dot');
+            
+            img.src = images[imgIdx];
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === imgIdx);
+            });
+        }
+        
+        // Image zoom functionality
+        function openImageZoom(category, productIdx, imgIdx) {
+            const categoryProducts = products.filter(p => p.category === category);
+            const product = categoryProducts[productIdx];
+            
+            currentZoomProduct = product;
+            currentZoomIndex = imgIdx;
+            
+            const modal = document.getElementById('imageZoomModal');
+            const img = document.getElementById('zoomImage');
+            const images = Array.isArray(product.images) ? product.images : [product.image];
+            
+            img.src = images[imgIdx];
+            modal.classList.add('active');
+            
+            // Show/hide nav buttons
+            document.getElementById('zoomPrevBtn').style.display = images.length > 1 ? 'flex' : 'none';
+            document.getElementById('zoomNextBtn').style.display = images.length > 1 ? 'flex' : 'none';
+        }
+        
+        function closeImageZoom() {
+            document.getElementById('imageZoomModal').classList.remove('active');
+        }
+        
+        function zoomPrevImage() {
+            if (!currentZoomProduct) return;
+            const images = Array.isArray(currentZoomProduct.images) ? currentZoomProduct.images : [currentZoomProduct.image];
+            currentZoomIndex = (currentZoomIndex - 1 + images.length) % images.length;
+            document.getElementById('zoomImage').src = images[currentZoomIndex];
+        }
+        
+        function zoomNextImage() {
+            if (!currentZoomProduct) return;
+            const images = Array.isArray(currentZoomProduct.images) ? currentZoomProduct.images : [currentZoomProduct.image];
+            currentZoomIndex = (currentZoomIndex + 1) % images.length;
+            document.getElementById('zoomImage').src = images[currentZoomIndex];
+        }
+        
+        // Close zoom on click outside
+        document.getElementById('imageZoomModal').addEventListener('click', (e) => {
+            if (e.target.id === 'imageZoomModal') {
+                closeImageZoom();
+            }
+        });
+        
+        // Keyboard navigation for zoom
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('imageZoomModal');
+            if (!modal.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeImageZoom();
+            if (e.key === 'ArrowLeft') zoomPrevImage();
+            if (e.key === 'ArrowRight') zoomNextImage();
+        });
+    </script>
+</body>
+</html>
